@@ -81,6 +81,6 @@ catch (UnableToAssignException e)
 }}}
 
 == More information ==
-Some javadoc should be there to help you get started.
+Some [http://gwt-rtti.googlecode.com/svn/trunk/javadoc/index.html javadoc] should be there to help you get started.
 
 See the tests for more examples.
