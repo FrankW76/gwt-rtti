@@ -1,0 +1,6 @@
+com.promis.generators
+com.promis.logging.client
+com.promis.rtti.annotations
+com.promis.rtti.client
+com.promis.rtti.client.annotations
+com.promis.rtti.generator
