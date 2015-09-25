@@ -109,6 +109,7 @@ implements RttiClass
 	@Override
 	public RttiMethod getMethod(final String name, Class<?>... paramTypes)
 	{
+    if (paramTypes == null) paramTypes = new Class<?>[0];
 		getMethods();
 		if (methods == null) return null;
 		first:

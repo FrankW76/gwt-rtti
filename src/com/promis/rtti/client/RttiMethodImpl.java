@@ -44,6 +44,8 @@ abstract class RttiMethodImpl extends RttiAnnotableEntityImpl implements
 	public Object invoke(Object instance, Object... params)
 			throws RttiInvocationException, RttiIllegalArgumentException
 	{
+    if (params == null) params = new Object[0];
+	
 		if ((instance == null) || (params.length != getParameterTypes().length))
 			throw new RttiIllegalArgumentException();
 		
