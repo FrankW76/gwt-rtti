@@ -51,13 +51,21 @@ public class RttiClassGenerator extends BaseGenerator
 	static class Client extends BaseGeneratorClient
 	{
 		static JClassType jString = null;
+		static JClassType jInteger = null;
+		static JClassType jDouble = null;
+		static JClassType jBoolean = null;
+		
 		@Override
 		protected void doGenerate()
 		{
 			//Refresh each time so isAssignableFrom works all the time while
 			//debugging (ClassOracle probably gets recreated and returns new
 			//instance for String)
-			/*if (jString == null) */jString = oracle.findType("java.lang.String");
+			/*if (jString == null) */
+			jString = oracle.findType("java.lang.String");
+			jInteger = oracle.findType("java.lang.Integer");
+			jDouble = oracle.findType("java.lang.Double");
+			jBoolean = oracle.findType("java.lang.Boolean");
 			//The type parameter is the one we are actually interested in
 			JClassType overlayType = extractInterfaceGenericParams(this.interfaceType)[0];
 			logger.log(Type.INFO, "Generating RTTI for " + overlayType.getQualifiedBinaryName());
@@ -275,7 +283,10 @@ public class RttiClassGenerator extends BaseGenerator
 			JClassType aObject = type.isClass();
 			if (aObject == null) return false;
 			
-			if (aObject.isAssignableTo(jString))
+			if ((aObject.isAssignableTo(jString)) 
+        || (aObject.isAssignableTo(jInteger))
+        || (aObject.isAssignableTo(jDouble))
+        || (aObject.isAssignableTo(jBoolean)))
 				return true;
 			
 			return false;
@@ -683,10 +694,13 @@ public class RttiClassGenerator extends BaseGenerator
 					writeBlockIntro("if (f.%s != null)", getter);
 					//From is not null
 					write("if (t.%s == null) return %s;", getter, FALSE);	//But to is 
-					if (field.getType().isClass().isAssignableTo(jString))
+					if ((field.getType().isClass().isAssignableTo(jString))
+            || (field.getType().isClass().isAssignableTo(jInteger))
+            || (field.getType().isClass().isAssignableTo(jDouble))
+            || ((field.getType().isClass().isAssignableTo(jBoolean))))
 					{
 						//Don't bother with Comparable to speed things up
-						//for strings
+						//for strings, Integers, Booleans and Doubles
 						write("if (! f.%1$s.equals(t.%1$s)) " +
 								"return %2$s;", getter, FALSE);
 					}
